@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+!api/mcp.js
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Package manager
+.npm
+.yarn
+.pnp.*
+package-lock.json
+yarn.lock
+
+# Deployment
+.vercel
+.railway
+.render

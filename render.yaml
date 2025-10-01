@@ -1,0 +1,21 @@
+# Render.com deployment configuration
+services:
+  - type: web
+    name: flashcard-mcp-server
+    runtime: node
+    repo: https://github.com/YOUR_USERNAME/voicecards # Update with your repo
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index2.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: SUPABASE_URL
+        sync: false # Set in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false # Set in Render dashboard
+    plan: free # Free tier
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true # Auto-deploy on push to main
