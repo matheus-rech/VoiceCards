@@ -1,0 +1,24 @@
+{
+  "askcliResourcesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillMetadata": {
+        "src": "./skill.json"
+      },
+      "code": {
+        "default": {
+          "src": "./lambda"
+        }
+      },
+      "skillInfrastructure": {
+        "userConfig": {
+          "runtime": "nodejs18.x",
+          "handler": "index.handler",
+          "templatePath": "./infrastructure/cfn-template.json",
+          "awsRegion": "us-east-1"
+        },
+        "type": "@ask-cli/cfn-deployer"
+      }
+    }
+  }
+}

@@ -1,0 +1,322 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "flashcard tutor",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        },
+        {
+          "name": "StartStudyingIntent",
+          "slots": [
+            {
+              "name": "deckName",
+              "type": "DECK_NAME"
+            }
+          ],
+          "samples": [
+            "start studying",
+            "let's study",
+            "begin studying",
+            "start",
+            "quiz me",
+            "let's review",
+            "study {deckName}",
+            "review {deckName} deck",
+            "practice {deckName}",
+            "start studying {deckName}",
+            "I want to study {deckName}",
+            "test me on {deckName}",
+            "help me study"
+          ]
+        },
+        {
+          "name": "RevealAnswerIntent",
+          "slots": [],
+          "samples": [
+            "reveal",
+            "show answer",
+            "tell me the answer",
+            "what's the answer",
+            "I don't know",
+            "I give up",
+            "reveal the answer",
+            "show me",
+            "tell me",
+            "what is it",
+            "no idea"
+          ]
+        },
+        {
+          "name": "GradeCardIntent",
+          "slots": [
+            {
+              "name": "difficulty",
+              "type": "DIFFICULTY_TYPE"
+            }
+          ],
+          "samples": [
+            "{difficulty}",
+            "that was {difficulty}",
+            "mark as {difficulty}",
+            "grade {difficulty}",
+            "{difficulty} difficulty",
+            "it was {difficulty}",
+            "I got it right",
+            "I got it wrong",
+            "correct",
+            "incorrect",
+            "I knew it",
+            "I didn't know it"
+          ]
+        },
+        {
+          "name": "SkipCardIntent",
+          "slots": [],
+          "samples": [
+            "skip",
+            "skip this",
+            "skip this card",
+            "next",
+            "next card",
+            "skip this one",
+            "pass",
+            "move on",
+            "let's skip this"
+          ]
+        },
+        {
+          "name": "ListDecksIntent",
+          "slots": [],
+          "samples": [
+            "list decks",
+            "what decks do I have",
+            "show my decks",
+            "available decks",
+            "which decks",
+            "my decks",
+            "what can I study",
+            "list all decks"
+          ]
+        },
+        {
+          "name": "GetProgressIntent",
+          "slots": [],
+          "samples": [
+            "how am I doing",
+            "my progress",
+            "show progress",
+            "statistics",
+            "stats",
+            "my score",
+            "session stats",
+            "how many cards",
+            "what's my accuracy"
+          ]
+        },
+        {
+          "name": "TakeBreakIntent",
+          "slots": [],
+          "samples": [
+            "take a break",
+            "pause",
+            "I need a break",
+            "let's take a break",
+            "pause session",
+            "break time"
+          ]
+        },
+        {
+          "name": "ResumeStudyingIntent",
+          "slots": [],
+          "samples": [
+            "continue",
+            "resume",
+            "keep going",
+            "continue studying",
+            "resume studying",
+            "I'm back",
+            "let's continue"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "DIFFICULTY_TYPE",
+          "values": [
+            {
+              "name": {
+                "value": "again",
+                "synonyms": [
+                  "forgot",
+                  "wrong",
+                  "incorrect",
+                  "didn't know",
+                  "fail",
+                  "failed"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "hard",
+                "synonyms": [
+                  "difficult",
+                  "challenging",
+                  "tough",
+                  "struggled"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "good",
+                "synonyms": [
+                  "correct",
+                  "right",
+                  "okay",
+                  "fine",
+                  "normal",
+                  "got it"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "easy",
+                "synonyms": [
+                  "simple",
+                  "perfect",
+                  "knew it",
+                  "too easy",
+                  "piece of cake"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DECK_NAME",
+          "values": [
+            {
+              "name": {
+                "value": "spanish"
+              }
+            },
+            {
+              "name": {
+                "value": "french"
+              }
+            },
+            {
+              "name": {
+                "value": "biology"
+              }
+            },
+            {
+              "name": {
+                "value": "history"
+              }
+            },
+            {
+              "name": {
+                "value": "math"
+              }
+            },
+            {
+              "name": {
+                "value": "vocabulary"
+              }
+            },
+            {
+              "name": {
+                "value": "medical"
+              }
+            },
+            {
+              "name": {
+                "value": "all",
+                "synonyms": [
+                  "everything",
+                  "all decks",
+                  "any deck"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "StartStudyingIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "deckName",
+              "type": "DECK_NAME",
+              "confirmationRequired": false,
+              "elicitationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "GradeCardIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "difficulty",
+              "type": "DIFFICULTY_TYPE",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.Difficulty"
+              }
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.Difficulty",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "How difficult was that? Say easy, good, hard, or again."
+          },
+          {
+            "type": "PlainText",
+            "value": "How did you do? Was it easy, good, hard, or did you not know it?"
+          }
+        ]
+      }
+    ]
+  }
+}

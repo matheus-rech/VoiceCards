@@ -1,0 +1,72 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Study flashcards hands-free with spaced repetition",
+          "examplePhrases": [
+            "Alexa, open flashcard tutor",
+            "Alexa, ask flashcard tutor to start studying",
+            "Alexa, tell flashcard tutor to quiz me"
+          ],
+          "keywords": [
+            "flashcards",
+            "study",
+            "learning",
+            "education",
+            "spaced repetition",
+            "memory",
+            "quiz",
+            "anki"
+          ],
+          "name": "Flashcard Tutor",
+          "description": "Transform your study time with voice-controlled flashcards! Flashcard Tutor uses scientifically-proven spaced repetition to help you remember anything. Perfect for studying while driving, cooking, or exercising.\n\nFeatures:\n• Hands-free studying with natural voice interaction\n• Spaced repetition algorithm (same as Anki)\n• Track your progress and accuracy\n• Multiple deck support\n• Encouraging AI tutor personality\n\nJust say 'Alexa, open Flashcard Tutor' and start learning!",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/1234/flashcard-icon-108.png",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/1234/flashcard-icon-512.png"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample testing instructions:\n1. Say 'Alexa, open flashcard tutor'\n2. Say 'Start studying'\n3. Answer questions and grade difficulty\n4. Say 'Stop' to end session",
+      "category": "EDUCATION_AND_REFERENCE",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:123456789012:function:flashcardTutorSkill"
+        },
+        "interfaces": [
+          {
+            "type": "AUDIO_PLAYER"
+          }
+        ],
+        "regions": {
+          "NA": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:us-east-1:123456789012:function:flashcardTutorSkill"
+            }
+          },
+          "EU": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:eu-west-1:123456789012:function:flashcardTutorSkill"
+            }
+          },
+          "FE": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:ap-northeast-1:123456789012:function:flashcardTutorSkill"
+            }
+          }
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "permissions": [],
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "isExportCompliant": true,
+      "containsAds": false,
+      "isChildDirected": false,
+      "usesPersonalInfo": false
+    }
+  }
+}

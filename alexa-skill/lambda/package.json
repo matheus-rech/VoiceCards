@@ -1,0 +1,20 @@
+{
+  "name": "flashcard-tutor-alexa-skill",
+  "version": "1.0.0",
+  "description": "Alexa skill for voice-controlled flashcard learning",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0",
+    "deploy": "npm run zip && npm run upload",
+    "zip": "zip -r ../skill-package.zip . -x '*.git*' -x 'node_modules/aws-sdk/*'",
+    "upload": "aws lambda update-function-code --function-name flashcardTutorSkill --zip-file fileb://../skill-package.zip"
+  },
+  "dependencies": {
+    "ask-sdk-core": "^2.12.1",
+    "ask-sdk-model": "^1.37.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.1400.0"
+  }
+}

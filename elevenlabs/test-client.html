@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceCards - ElevenLabs Test Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.connecting {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .widget-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .widget-placeholder {
+            text-align: center;
+            color: #999;
+        }
+
+        .config-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .config-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            border: 1px solid #b3d7ff;
+        }
+
+        .instructions h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #333;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .listening {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 VoiceCards</h1>
+        <p class="subtitle">ElevenLabs Voice Test Client</p>
+
+        <div id="status" class="status disconnected">
+            ⭕ Not Connected
+        </div>
+
+        <div class="controls">
+            <button id="connectBtn" class="btn-primary">
+                Connect to ElevenLabs
+            </button>
+            <button id="startBtn" class="btn-secondary" disabled>
+                Start Study Session
+            </button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="cardsReviewed">0</div>
+                <div class="stat-label">Cards Reviewed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="sessionTime">0:00</div>
+                <div class="stat-label">Session Time</div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3>⚙️ Configuration</h3>
+            <div class="input-group">
+                <label for="agentId">ElevenLabs Agent ID:</label>
+                <input type="text" id="agentId" placeholder="Enter your agent ID">
+            </div>
+            <div class="input-group">
+                <label for="apiKey">ElevenLabs API Key:</label>
+                <input type="password" id="apiKey" placeholder="Enter your API key">
+            </div>
+            <button onclick="saveConfig()" class="btn-secondary">Save Configuration</button>
+        </div>
+
+        <div id="widgetContainer" class="widget-container">
+            <div class="widget-placeholder">
+                <p>ElevenLabs widget will appear here once connected</p>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Quick Start Instructions</h3>
+            <ol>
+                <li>Get your Agent ID from ElevenLabs Console</li>
+                <li>Get your API key from ElevenLabs settings</li>
+                <li>Enter them above and click Save</li>
+                <li>Click "Connect to ElevenLabs"</li>
+                <li>Say "Let's start studying" to begin!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Load saved configuration
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedAgentId = localStorage.getItem('elevenlabs_agent_id');
+            const savedApiKey = localStorage.getItem('elevenlabs_api_key');
+
+            if (savedAgentId) document.getElementById('agentId').value = savedAgentId;
+            if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
+        });
+
+        // Save configuration
+        function saveConfig() {
+            const agentId = document.getElementById('agentId').value;
+            const apiKey = document.getElementById('apiKey').value;
+
+            localStorage.setItem('elevenlabs_agent_id', agentId);
+            localStorage.setItem('elevenlabs_api_key', apiKey);
+
+            alert('Configuration saved! Now click "Connect to ElevenLabs"');
+        }
+
+        // Session tracking
+        let sessionStartTime = null;
+        let sessionInterval = null;
+        let stats = {
+            cardsReviewed: 0,
+            cardsCorrect: 0
+        };
+
+        // Update session timer
+        function updateSessionTime() {
+            if (!sessionStartTime) return;
+
+            const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('sessionTime').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Connect to ElevenLabs
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            const agentId = document.getElementById('agentId').value;
+            const apiKey = document.getElementById('apiKey').value;
+
+            if (!agentId || !apiKey) {
+                alert('Please enter your Agent ID and API Key first!');
+                return;
+            }
+
+            const statusEl = document.getElementById('status');
+            statusEl.className = 'status connecting';
+            statusEl.textContent = '🔄 Connecting...';
+
+            try {
+                // Initialize ElevenLabs widget
+                const widgetContainer = document.getElementById('widgetContainer');
+                widgetContainer.innerHTML = `
+                    <iframe
+                        src="https://elevenlabs.io/app/conversational-ai/embed/${agentId}"
+                        width="100%"
+                        height="400"
+                        frameborder="0"
+                        allow="microphone"
+                    ></iframe>
+                `;
+
+                // Update UI
+                statusEl.className = 'status connected';
+                statusEl.textContent = '✅ Connected to ElevenLabs';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('connectBtn').textContent = 'Reconnect';
+
+                // Start session tracking
+                sessionStartTime = Date.now();
+                sessionInterval = setInterval(updateSessionTime, 1000);
+
+                // Listen for messages from ElevenLabs (if using postMessage API)
+                window.addEventListener('message', (event) => {
+                    if (event.data.type === 'elevenlabs-stats') {
+                        stats.cardsReviewed = event.data.cardsReviewed || 0;
+                        stats.cardsCorrect = event.data.cardsCorrect || 0;
+
+                        document.getElementById('cardsReviewed').textContent = stats.cardsReviewed;
+                        document.getElementById('accuracy').textContent =
+                            stats.cardsReviewed > 0
+                                ? `${Math.round((stats.cardsCorrect / stats.cardsReviewed) * 100)}%`
+                                : '0%';
+                    }
+                });
+
+            } catch (error) {
+                statusEl.className = 'status disconnected';
+                statusEl.textContent = '❌ Connection failed';
+                console.error('Failed to connect:', error);
+            }
+        });
+
+        // Start study session
+        document.getElementById('startBtn').addEventListener('click', () => {
+            const widget = document.querySelector('iframe');
+            if (widget) {
+                // Send message to widget to start session
+                widget.contentWindow.postMessage({
+                    type: 'start-session',
+                    message: "Let's start studying"
+                }, '*');
+            }
+        });
+
+        // Simulated stats update (replace with real webhook data)
+        setInterval(() => {
+            if (document.querySelector('.status.connected')) {
+                // In production, these would come from your webhook
+                // For now, we'll just show example updates
+                const exampleUpdates = [
+                    { cardsReviewed: 5, cardsCorrect: 4 },
+                    { cardsReviewed: 10, cardsCorrect: 8 },
+                    { cardsReviewed: 15, cardsCorrect: 13 }
+                ];
+
+                // Randomly update stats for demo
+                if (Math.random() > 0.7 && stats.cardsReviewed < 15) {
+                    const update = exampleUpdates[Math.floor(stats.cardsReviewed / 5)];
+                    if (update) {
+                        stats = update;
+                        document.getElementById('cardsReviewed').textContent = stats.cardsReviewed;
+                        document.getElementById('accuracy').textContent =
+                            `${Math.round((stats.cardsCorrect / stats.cardsReviewed) * 100)}%`;
+                    }
+                }
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
